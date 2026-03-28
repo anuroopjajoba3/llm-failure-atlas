@@ -1,0 +1,758 @@
+{
+  "model": "claude-opus-4-6",
+  "timestamp": "20260328_095602",
+  "total_tasks": 15,
+  "overall_score": 0.9433333333333334,
+  "results": [
+    {
+      "task_id": "BC-01",
+      "task_name": "Fence Post Problem",
+      "category": "boundary_conditions",
+      "known_failure": "Models return n instead of n+1, and almost always fail on n=0.",
+      "raw_response": "```python\ndef fence_posts(n):\n    return n + 1\n```",
+      "extraction_failed": false,
+      "test_results": [
+        {
+          "input": "n=3",
+          "expected": 4,
+          "got": 4,
+          "passed": true
+        },
+        {
+          "input": "n=1",
+          "expected": 2,
+          "got": 2,
+          "passed": true
+        },
+        {
+          "input": "n=0",
+          "expected": 1,
+          "got": 1,
+          "passed": true
+        },
+        {
+          "input": "n=100",
+          "expected": 101,
+          "got": 101,
+          "passed": true
+        },
+        {
+          "input": "n=10",
+          "expected": 11,
+          "got": 11,
+          "passed": true
+        }
+      ],
+      "score": 1.0,
+      "passed": 5,
+      "total": 5
+    },
+    {
+      "task_id": "BC-02",
+      "task_name": "Inclusive Range",
+      "category": "boundary_conditions",
+      "known_failure": "Models use range(a, b) which excludes b. Single element case often returns [].",
+      "raw_response": "\n\n```python\ndef inclusive_range(a, b):\n    if a > b:\n        return []\n    return list(range(a, b + 1))\n```",
+      "extraction_failed": false,
+      "test_results": [
+        {
+          "input": "a=2, b=5",
+          "expected": [
+            2,
+            3,
+            4,
+            5
+          ],
+          "got": [
+            2,
+            3,
+            4,
+            5
+          ],
+          "passed": true
+        },
+        {
+          "input": "a=5, b=5",
+          "expected": [
+            5
+          ],
+          "got": [
+            5
+          ],
+          "passed": true
+        },
+        {
+          "input": "a=5, b=2",
+          "expected": [],
+          "got": [],
+          "passed": true
+        },
+        {
+          "input": "a=0, b=0",
+          "expected": [
+            0
+          ],
+          "got": [
+            0
+          ],
+          "passed": true
+        },
+        {
+          "input": "a=-2, b=2",
+          "expected": [
+            -2,
+            -1,
+            0,
+            1,
+            2
+          ],
+          "got": [
+            -2,
+            -1,
+            0,
+            1,
+            2
+          ],
+          "passed": true
+        }
+      ],
+      "score": 1.0,
+      "passed": 5,
+      "total": 5
+    },
+    {
+      "task_id": "BC-03",
+      "task_name": "Last Page Number",
+      "category": "boundary_conditions",
+      "known_failure": "Models use n // k and miss ceiling division. n % k == 0 case returns page+1.",
+      "raw_response": "```python\ndef last_page(n, k):\n    if n == 0:\n        return 0\n    return (n + k - 1) // k\n```",
+      "extraction_failed": false,
+      "test_results": [
+        {
+          "input": "n=10, k=3",
+          "expected": 4,
+          "got": 4,
+          "passed": true
+        },
+        {
+          "input": "n=9, k=3",
+          "expected": 3,
+          "got": 3,
+          "passed": true
+        },
+        {
+          "input": "n=1, k=10",
+          "expected": 1,
+          "got": 1,
+          "passed": true
+        },
+        {
+          "input": "n=0, k=3",
+          "expected": 0,
+          "got": 0,
+          "passed": true
+        },
+        {
+          "input": "n=7, k=7",
+          "expected": 1,
+          "got": 1,
+          "passed": true
+        }
+      ],
+      "score": 1.0,
+      "passed": 5,
+      "total": 5
+    },
+    {
+      "task_id": "BC-04",
+      "task_name": "Overlapping Substring Count",
+      "category": "boundary_conditions",
+      "known_failure": "Models use str.count() which skips overlaps. 'aaaa'.count('aa') returns 2 not 3.",
+      "raw_response": "```python\ndef count_overlapping(pattern, string):\n    count = 0\n    start = 0\n    while True:\n        pos = string.find(pattern, start)\n        if pos == -1:\n            break\n        count += 1\n        start = pos + 1\n    return count\n```",
+      "extraction_failed": false,
+      "test_results": [
+        {
+          "input": "pattern='aa', string='aaaa'",
+          "expected": 3,
+          "got": 3,
+          "passed": true
+        },
+        {
+          "input": "pattern='ab', string='ababab'",
+          "expected": 3,
+          "got": 3,
+          "passed": true
+        },
+        {
+          "input": "pattern='aa', string='aaa'",
+          "expected": 2,
+          "got": 2,
+          "passed": true
+        },
+        {
+          "input": "pattern='xyz', string='abcdef'",
+          "expected": 0,
+          "got": 0,
+          "passed": true
+        },
+        {
+          "input": "pattern='a', string='aaaa'",
+          "expected": 4,
+          "got": 4,
+          "passed": true
+        }
+      ],
+      "score": 1.0,
+      "passed": 5,
+      "total": 5
+    },
+    {
+      "task_id": "BC-05",
+      "task_name": "Circular Buffer Index",
+      "category": "boundary_conditions",
+      "known_failure": "Models get the basic case right but fail on k=0, single element buffer, or full loop.",
+      "raw_response": "```python\ndef circular_index(n, i, k):\n    return (i + k) % n\n```",
+      "extraction_failed": false,
+      "test_results": [
+        {
+          "input": "n=5, i=3, k=4",
+          "expected": 2,
+          "got": 2,
+          "passed": true
+        },
+        {
+          "input": "n=5, i=0, k=5",
+          "expected": 0,
+          "got": 0,
+          "passed": true
+        },
+        {
+          "input": "n=5, i=4, k=1",
+          "expected": 0,
+          "got": 0,
+          "passed": true
+        },
+        {
+          "input": "n=5, i=0, k=0",
+          "expected": 0,
+          "got": 0,
+          "passed": true
+        },
+        {
+          "input": "n=1, i=0, k=100",
+          "expected": 0,
+          "got": 0,
+          "passed": true
+        }
+      ],
+      "score": 1.0,
+      "passed": 5,
+      "total": 5
+    },
+    {
+      "task_id": "BC-01H",
+      "task_name": "Fence Post Problem (Hardened)",
+      "category": "boundary_conditions_hardened",
+      "known_failure": "Without the n=0 hint, models often return 0 or raise an error for n=0. Some return n instead of n+1 for very small n.",
+      "raw_response": "```python\ndef fence_posts(n):\n    return n + 1\n```",
+      "extraction_failed": false,
+      "test_results": [
+        {
+          "input": "n=3",
+          "expected": 4,
+          "got": 4,
+          "passed": true
+        },
+        {
+          "input": "n=1",
+          "expected": 2,
+          "got": 2,
+          "passed": true
+        },
+        {
+          "input": "n=0",
+          "expected": 1,
+          "got": 1,
+          "passed": true
+        },
+        {
+          "input": "n=100",
+          "expected": 101,
+          "got": 101,
+          "passed": true
+        }
+      ],
+      "score": 1.0,
+      "passed": 4,
+      "total": 4
+    },
+    {
+      "task_id": "BC-02H",
+      "task_name": "Inclusive Range (Hardened)",
+      "category": "boundary_conditions_hardened",
+      "known_failure": "'Between' is ambiguous \u2014 models often exclude endpoints. Without 'inclusive on both ends', models use range(a+1, b) or range(a, b). Reversed range (a > b) almost always crashes or returns wrong result.",
+      "raw_response": "```python\ndef inclusive_range(a, b):\n    if a <= b:\n        return list(range(a, b + 1))\n    else:\n        return list(range(a, b - 1, -1))\n```",
+      "extraction_failed": false,
+      "test_results": [
+        {
+          "input": "a=2, b=5",
+          "expected": [
+            2,
+            3,
+            4,
+            5
+          ],
+          "got": [
+            2,
+            3,
+            4,
+            5
+          ],
+          "passed": true
+        },
+        {
+          "input": "a=5, b=5",
+          "expected": [
+            5
+          ],
+          "got": [
+            5
+          ],
+          "passed": true
+        },
+        {
+          "input": "a=5, b=2",
+          "expected": [],
+          "got": [
+            5,
+            4,
+            3,
+            2
+          ],
+          "passed": false
+        },
+        {
+          "input": "a=-1, b=1",
+          "expected": [
+            -1,
+            0,
+            1
+          ],
+          "got": [
+            -1,
+            0,
+            1
+          ],
+          "passed": true
+        }
+      ],
+      "score": 0.75,
+      "passed": 3,
+      "total": 4
+    },
+    {
+      "task_id": "BC-03H",
+      "task_name": "Last Page Number (Hardened)",
+      "category": "boundary_conditions_hardened",
+      "known_failure": "Without the n=0 hint, models skip the zero case. Without the ceiling division hint, models use n // k and fail when n % k != 0.",
+      "raw_response": "```python\ndef last_page(n, k):\n    if n == 0:\n        return 1\n    return (n + k - 1) // k\n```",
+      "extraction_failed": false,
+      "test_results": [
+        {
+          "input": "n=10, k=3",
+          "expected": 4,
+          "got": 4,
+          "passed": true
+        },
+        {
+          "input": "n=9, k=3",
+          "expected": 3,
+          "got": 3,
+          "passed": true
+        },
+        {
+          "input": "n=0, k=3",
+          "expected": 0,
+          "got": 1,
+          "passed": false
+        },
+        {
+          "input": "n=1, k=10",
+          "expected": 1,
+          "got": 1,
+          "passed": true
+        },
+        {
+          "input": "n=7, k=7",
+          "expected": 1,
+          "got": 1,
+          "passed": true
+        }
+      ],
+      "score": 0.8,
+      "passed": 4,
+      "total": 5
+    },
+    {
+      "task_id": "BC-04H",
+      "task_name": "Overlapping Substring Count (Hardened)",
+      "category": "boundary_conditions_hardened",
+      "known_failure": "Without 'overlapping' explicitly stated, models use str.count() which skips overlaps. This is the most reliable failure in Category 1 \u2014 str.count() is the obvious solution.",
+      "raw_response": "\n\n```python\ndef count_overlapping(pattern, string):\n    count = 0\n    start = 0\n    while True:\n        pos = string.find(pattern, start)\n        if pos == -1:\n            break\n        count += 1\n        start = pos + 1\n    return count\n```",
+      "extraction_failed": false,
+      "test_results": [
+        {
+          "input": "pattern='aa', string='aaaa'",
+          "expected": 3,
+          "got": 3,
+          "passed": true
+        },
+        {
+          "input": "pattern='ab', string='ababab'",
+          "expected": 3,
+          "got": 3,
+          "passed": true
+        },
+        {
+          "input": "pattern='aa', string='aaa'",
+          "expected": 2,
+          "got": 2,
+          "passed": true
+        },
+        {
+          "input": "pattern='xyz', string='abcdef'",
+          "expected": 0,
+          "got": 0,
+          "passed": true
+        }
+      ],
+      "score": 1.0,
+      "passed": 4,
+      "total": 4
+    },
+    {
+      "task_id": "BC-05H",
+      "task_name": "Circular Buffer Index (Hardened)",
+      "category": "boundary_conditions_hardened",
+      "known_failure": "Without examples, models sometimes forget to apply modulo. n=1 single element buffer with large k causes ZeroDivisionError in some models if they don't handle n=1 specially \u2014 but Claude usually gets (i+k)%n right. The real failure is k=0 returning wrong type or n=0 causing ZeroDivisionError.",
+      "raw_response": "```python\ndef circular_index(n, i, k):\n    return (i + k) % n\n```",
+      "extraction_failed": false,
+      "test_results": [
+        {
+          "input": "n=5, i=3, k=4",
+          "expected": 2,
+          "got": 2,
+          "passed": true
+        },
+        {
+          "input": "n=5, i=0, k=5",
+          "expected": 0,
+          "got": 0,
+          "passed": true
+        },
+        {
+          "input": "n=5, i=4, k=1",
+          "expected": 0,
+          "got": 0,
+          "passed": true
+        },
+        {
+          "input": "n=5, i=0, k=0",
+          "expected": 0,
+          "got": 0,
+          "passed": true
+        },
+        {
+          "input": "n=1, i=0, k=100",
+          "expected": 0,
+          "got": 0,
+          "passed": true
+        }
+      ],
+      "score": 1.0,
+      "passed": 5,
+      "total": 5
+    },
+    {
+      "task_id": "AR-01",
+      "task_name": "Remove Duplicates",
+      "category": "ambiguous_requirements",
+      "known_failure": "Two valid interpretations: (1) keep first occurrence, (2) keep last occurrence. Models almost always keep first. Also ambiguous: does order matter? Most models return sorted or set-converted result losing original order.",
+      "raw_response": "\n\n```python\ndef remove_duplicates(lst):\n    seen = set()\n    result = []\n    for item in lst:\n        if item not in seen:\n            seen.add(item)\n            result.append(item)\n    return result\n```",
+      "extraction_failed": false,
+      "test_results": [
+        {
+          "input": "[1, 2, 3, 2, 1]",
+          "expected": [
+            1,
+            2,
+            3
+          ],
+          "got": [
+            1,
+            2,
+            3
+          ],
+          "passed": true
+        },
+        {
+          "input": "[1, 1, 1]",
+          "expected": [
+            1
+          ],
+          "got": [
+            1
+          ],
+          "passed": true
+        },
+        {
+          "input": "[]",
+          "expected": [],
+          "got": [],
+          "passed": true
+        },
+        {
+          "input": "['a', 'b', 'a', 'c']",
+          "expected": [
+            "a",
+            "b",
+            "c"
+          ],
+          "got": [
+            "a",
+            "b",
+            "c"
+          ],
+          "passed": true
+        },
+        {
+          "input": "[3, 1, 2, 1, 3]",
+          "expected": [
+            3,
+            1,
+            2
+          ],
+          "got": [
+            3,
+            1,
+            2
+          ],
+          "passed": true
+        }
+      ],
+      "score": 1.0,
+      "passed": 5,
+      "total": 5
+    },
+    {
+      "task_id": "AR-02",
+      "task_name": "Capitalize Words",
+      "category": "ambiguous_requirements",
+      "known_failure": "Three valid interpretations: (1) title case every word, (2) capitalize only first word, (3) uppercase everything. Also ambiguous: what happens to already-capitalized letters mid-word? 'hELLO' \u2192 'Hello' or 'HELLO' or 'HEllo'? Models never ask.",
+      "raw_response": "\n```python\ndef capitalize_words(s):\n    return ' '.join(word.capitalize() for word in s.split(' '))\n```",
+      "extraction_failed": false,
+      "test_results": [
+        {
+          "input": "'hello world'",
+          "expected": "Hello World",
+          "got": "Hello World",
+          "passed": true
+        },
+        {
+          "input": "'HELLO WORLD'",
+          "expected": "Hello World",
+          "got": "Hello World",
+          "passed": true
+        },
+        {
+          "input": "'hello'",
+          "expected": "Hello",
+          "got": "Hello",
+          "passed": true
+        },
+        {
+          "input": "''",
+          "expected": "",
+          "got": "",
+          "passed": true
+        },
+        {
+          "input": "\"it's a test\"",
+          "expected": "It's A Test",
+          "got": "It's A Test",
+          "passed": true
+        }
+      ],
+      "score": 1.0,
+      "passed": 5,
+      "total": 5
+    },
+    {
+      "task_id": "AR-03",
+      "task_name": "Find Middle Element",
+      "category": "ambiguous_requirements",
+      "known_failure": "Ambiguous for even-length lists: return one middle, both middles, or average? For [1,2,3,4]: is middle 2, 3, [2,3], or 2.5? Models silently pick one without flagging the ambiguity. Also fails on empty list \u2014 most models crash.",
+      "raw_response": "\n```python\ndef find_middle(lst):\n    return lst[len(lst) // 2]\n```",
+      "extraction_failed": false,
+      "test_results": [
+        {
+          "input": "[1, 2, 3]",
+          "expected": 2,
+          "got": 2,
+          "passed": true
+        },
+        {
+          "input": "[1, 2, 3, 4]",
+          "expected": 2,
+          "got": 3,
+          "passed": false
+        },
+        {
+          "input": "[1]",
+          "expected": 1,
+          "got": 1,
+          "passed": true
+        },
+        {
+          "input": "[1, 2, 3, 4, 5]",
+          "expected": 3,
+          "got": 3,
+          "passed": true
+        },
+        {
+          "input": "[10, 20]",
+          "expected": 10,
+          "got": 20,
+          "passed": false
+        }
+      ],
+      "score": 0.6,
+      "passed": 3,
+      "total": 5
+    },
+    {
+      "task_id": "AR-04",
+      "task_name": "Truncate String",
+      "category": "ambiguous_requirements",
+      "known_failure": "Ambiguous: does n include the ellipsis or not? truncate('hello world', 7) \u2192 'hell...' (4 chars + 3 dots = 7) or 'hello w...' (7 chars + 3 dots = 10)? Also: what if string is already shorter than n? Add ellipsis or return as-is? Models add ellipsis even when not needed.",
+      "raw_response": "\n```python\ndef truncate(s, n):\n    if n < 3:\n        return s[:n]\n    if len(s) <= n:\n        return s\n    return s[:n - 3] + \"...\"\n```",
+      "extraction_failed": false,
+      "test_results": [
+        {
+          "input": "s='hello world', n=7",
+          "expected": "hell...",
+          "got": "hell...",
+          "passed": true
+        },
+        {
+          "input": "s='hello', n=10",
+          "expected": "hello",
+          "got": "hello",
+          "passed": true
+        },
+        {
+          "input": "s='hello world', n=11",
+          "expected": "hello world",
+          "got": "hello world",
+          "passed": true
+        },
+        {
+          "input": "s='hi', n=5",
+          "expected": "hi",
+          "got": "hi",
+          "passed": true
+        },
+        {
+          "input": "s='hello world', n=5",
+          "expected": "he...",
+          "got": "he...",
+          "passed": true
+        }
+      ],
+      "score": 1.0,
+      "passed": 5,
+      "total": 5
+    },
+    {
+      "task_id": "AR-05",
+      "task_name": "Flatten List",
+      "category": "ambiguous_requirements",
+      "known_failure": "Ambiguous depth: flatten one level or all levels? [1, [2, [3, 4]]] \u2192 [1, 2, [3, 4]] (one level) or [1, 2, 3, 4] (full)? Models almost always do full flatten without asking. Also fails silently on mixed types: [1, 'hello', [2, 3]] \u2014 iterating over string characters is a common bug.",
+      "raw_response": "\n\n```python\ndef flatten(lst):\n    result = []\n    for item in lst:\n        if isinstance(item, list):\n            result.extend(flatten(item))\n        else:\n            result.append(item)\n    return result\n```",
+      "extraction_failed": false,
+      "test_results": [
+        {
+          "input": "[1, [2, 3]]",
+          "expected": [
+            1,
+            2,
+            3
+          ],
+          "got": [
+            1,
+            2,
+            3
+          ],
+          "passed": true
+        },
+        {
+          "input": "[1, [2, [3, 4]]]",
+          "expected": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "got": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "passed": true
+        },
+        {
+          "input": "[]",
+          "expected": [],
+          "got": [],
+          "passed": true
+        },
+        {
+          "input": "[1, 2, 3]",
+          "expected": [
+            1,
+            2,
+            3
+          ],
+          "got": [
+            1,
+            2,
+            3
+          ],
+          "passed": true
+        },
+        {
+          "input": "[[1, 2], [3, [4, 5]]]",
+          "expected": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "got": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "passed": true
+        }
+      ],
+      "score": 1.0,
+      "passed": 5,
+      "total": 5
+    }
+  ]
+}

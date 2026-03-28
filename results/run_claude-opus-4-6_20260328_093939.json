@@ -1,0 +1,253 @@
+{
+  "model": "claude-opus-4-6",
+  "timestamp": "20260328_093939",
+  "total_tasks": 5,
+  "overall_score": 1.0,
+  "results": [
+    {
+      "task_id": "BC-01",
+      "task_name": "Fence Post Problem",
+      "category": "boundary_conditions",
+      "known_failure": "Models return n instead of n+1, and almost always fail on n=0.",
+      "raw_response": "```python\ndef fence_posts(n):\n    return n + 1\n```",
+      "extraction_failed": false,
+      "test_results": [
+        {
+          "input": "n=3",
+          "expected": 4,
+          "got": 4,
+          "passed": true
+        },
+        {
+          "input": "n=1",
+          "expected": 2,
+          "got": 2,
+          "passed": true
+        },
+        {
+          "input": "n=0",
+          "expected": 1,
+          "got": 1,
+          "passed": true
+        },
+        {
+          "input": "n=100",
+          "expected": 101,
+          "got": 101,
+          "passed": true
+        },
+        {
+          "input": "n=10",
+          "expected": 11,
+          "got": 11,
+          "passed": true
+        }
+      ],
+      "score": 1.0,
+      "passed": 5,
+      "total": 5
+    },
+    {
+      "task_id": "BC-02",
+      "task_name": "Inclusive Range",
+      "category": "boundary_conditions",
+      "known_failure": "Models use range(a, b) which excludes b. Single element case often returns [].",
+      "raw_response": "\n\n```python\ndef inclusive_range(a, b):\n    if a > b:\n        return []\n    return list(range(a, b + 1))\n```",
+      "extraction_failed": false,
+      "test_results": [
+        {
+          "input": "a=2, b=5",
+          "expected": [
+            2,
+            3,
+            4,
+            5
+          ],
+          "got": [
+            2,
+            3,
+            4,
+            5
+          ],
+          "passed": true
+        },
+        {
+          "input": "a=5, b=5",
+          "expected": [
+            5
+          ],
+          "got": [
+            5
+          ],
+          "passed": true
+        },
+        {
+          "input": "a=5, b=2",
+          "expected": [],
+          "got": [],
+          "passed": true
+        },
+        {
+          "input": "a=0, b=0",
+          "expected": [
+            0
+          ],
+          "got": [
+            0
+          ],
+          "passed": true
+        },
+        {
+          "input": "a=-2, b=2",
+          "expected": [
+            -2,
+            -1,
+            0,
+            1,
+            2
+          ],
+          "got": [
+            -2,
+            -1,
+            0,
+            1,
+            2
+          ],
+          "passed": true
+        }
+      ],
+      "score": 1.0,
+      "passed": 5,
+      "total": 5
+    },
+    {
+      "task_id": "BC-03",
+      "task_name": "Last Page Number",
+      "category": "boundary_conditions",
+      "known_failure": "Models use n // k and miss ceiling division. n % k == 0 case returns page+1.",
+      "raw_response": "```python\ndef last_page(n, k):\n    if n == 0:\n        return 0\n    return (n + k - 1) // k\n```",
+      "extraction_failed": false,
+      "test_results": [
+        {
+          "input": "n=10, k=3",
+          "expected": 4,
+          "got": 4,
+          "passed": true
+        },
+        {
+          "input": "n=9, k=3",
+          "expected": 3,
+          "got": 3,
+          "passed": true
+        },
+        {
+          "input": "n=1, k=10",
+          "expected": 1,
+          "got": 1,
+          "passed": true
+        },
+        {
+          "input": "n=0, k=3",
+          "expected": 0,
+          "got": 0,
+          "passed": true
+        },
+        {
+          "input": "n=7, k=7",
+          "expected": 1,
+          "got": 1,
+          "passed": true
+        }
+      ],
+      "score": 1.0,
+      "passed": 5,
+      "total": 5
+    },
+    {
+      "task_id": "BC-04",
+      "task_name": "Overlapping Substring Count",
+      "category": "boundary_conditions",
+      "known_failure": "Models use str.count() which skips overlaps. 'aaaa'.count('aa') returns 2 not 3.",
+      "raw_response": "```python\ndef count_overlapping(pattern, string):\n    count = 0\n    start = 0\n    while True:\n        pos = string.find(pattern, start)\n        if pos == -1:\n            break\n        count += 1\n        start = pos + 1\n    return count\n```",
+      "extraction_failed": false,
+      "test_results": [
+        {
+          "input": "pattern='aa', string='aaaa'",
+          "expected": 3,
+          "got": 3,
+          "passed": true
+        },
+        {
+          "input": "pattern='ab', string='ababab'",
+          "expected": 3,
+          "got": 3,
+          "passed": true
+        },
+        {
+          "input": "pattern='aa', string='aaa'",
+          "expected": 2,
+          "got": 2,
+          "passed": true
+        },
+        {
+          "input": "pattern='xyz', string='abcdef'",
+          "expected": 0,
+          "got": 0,
+          "passed": true
+        },
+        {
+          "input": "pattern='a', string='aaaa'",
+          "expected": 4,
+          "got": 4,
+          "passed": true
+        }
+      ],
+      "score": 1.0,
+      "passed": 5,
+      "total": 5
+    },
+    {
+      "task_id": "BC-05",
+      "task_name": "Circular Buffer Index",
+      "category": "boundary_conditions",
+      "known_failure": "Models get the basic case right but fail on k=0, single element buffer, or full loop.",
+      "raw_response": "```python\ndef circular_index(n, i, k):\n    return (i + k) % n\n```",
+      "extraction_failed": false,
+      "test_results": [
+        {
+          "input": "n=5, i=3, k=4",
+          "expected": 2,
+          "got": 2,
+          "passed": true
+        },
+        {
+          "input": "n=5, i=0, k=5",
+          "expected": 0,
+          "got": 0,
+          "passed": true
+        },
+        {
+          "input": "n=5, i=4, k=1",
+          "expected": 0,
+          "got": 0,
+          "passed": true
+        },
+        {
+          "input": "n=5, i=0, k=0",
+          "expected": 0,
+          "got": 0,
+          "passed": true
+        },
+        {
+          "input": "n=1, i=0, k=100",
+          "expected": 0,
+          "got": 0,
+          "passed": true
+        }
+      ],
+      "score": 1.0,
+      "passed": 5,
+      "total": 5
+    }
+  ]
+}
