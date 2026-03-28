@@ -1,6 +1,6 @@
 """
-LLM Failure Atlas — Main Runner v4
-Runs all task categories against Claude and saves results.
+LLM Failure Atlas — Main Runner v5 (Final)
+All 5 categories: BC, BCH, AR, SF, CT, OC
 
 Usage:
     python runner.py
@@ -21,18 +21,20 @@ from tasks.boundary_conditions_hardened import TASKS as BCH_TASKS
 from tasks.ambiguous_requirements import TASKS as AR_TASKS
 from tasks.silent_failure import TASKS as SF_TASKS
 from tasks.context_window_traps import TASKS as CT_TASKS
+from tasks.overconfidence import TASKS as OC_TASKS
 from graders.boundary_conditions import GRADERS as BC_GRADERS
 from graders.category2 import GRADERS as CAT2_GRADERS
 from graders.silent_failure import GRADERS as SF_GRADERS
 from graders.context_window_traps import GRADERS as CT_GRADERS
+from graders.overconfidence import GRADERS as OC_GRADERS
 
 client = Anthropic()
 MODEL = "claude-opus-4-6"
 RESULTS_DIR = "results"
 os.makedirs(RESULTS_DIR, exist_ok=True)
 
-ALL_TASKS = BC_TASKS + BCH_TASKS + AR_TASKS + SF_TASKS + CT_TASKS
-ALL_GRADERS = {**BC_GRADERS, **CAT2_GRADERS, **SF_GRADERS, **CT_GRADERS}
+ALL_TASKS = BC_TASKS + BCH_TASKS + AR_TASKS + SF_TASKS + CT_TASKS + OC_TASKS
+ALL_GRADERS = {**BC_GRADERS, **CAT2_GRADERS, **SF_GRADERS, **CT_GRADERS, **OC_GRADERS}
 
 
 def ask_claude(prompt: str) -> str:
