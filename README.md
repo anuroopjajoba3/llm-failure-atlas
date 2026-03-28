@@ -4,7 +4,7 @@ A curated benchmark of coding tasks designed to expose where frontier AI models 
 
 Built to develop intuition for AI model failure modes — finding the gaps a model itself doesn't see.
 
-**Live results: Claude Opus (claude-opus-4-6) scored 94% across 15 tasks. 3 documented failures.**
+**Live results: Claude Opus (claude-opus-4-6) scored 95% across 20 tasks. 4 documented failures.**
 
 ---
 
@@ -73,6 +73,21 @@ Got: 20
 
 ---
 
+### SF-01 — Integer Square Root (Silent Failure)
+**Prompt:** "Write a function that returns the integer square root of n — the largest integer whose square is <= n."
+
+**Failure:** Claude used `int(math.sqrt(n))` which works correctly for small numbers but silently returns a wrong answer for very large integers due to floating point precision limits.
+
+```
+Input: n=9999999999999999948
+Expected: 3162277660168379
+Got: 3162277660
+```
+
+**Why it matters:** This is the most dangerous failure type — no exception, no warning, no indication anything went wrong. The function returns a plausible-looking integer that is simply incorrect. A user running `int_sqrt(100)` would never discover this bug. Only edge case testing at scale reveals it. The correct implementation uses integer arithmetic (`math.isqrt(n)`) rather than floating point.
+
+---
+
 ## Full Results
 
 ### Category 1: Boundary Conditions (with hints)
@@ -108,17 +123,36 @@ Got: 20
 
 **Finding:** Claude resolves ambiguous requirements silently. It picks an interpretation and implements it without acknowledging alternatives exist.
 
+### Category 3: Silent Failure
+| Task | Name | Score | Failure |
+|------|------|-------|---------|
+| SF-01 | Integer Square Root | 7/8 | Float precision silently wrong on large integers |
+| SF-02 | Sum of Digits | 7/7 | None |
+| SF-03 | Caesar Cipher | 7/7 | None |
+| SF-04 | Running Average | 6/6 | None |
+| SF-05 | Rotate List | 6/6 | None |
+
+**Finding:** Claude avoids the common silent failures (integer division, alphabet wrap, wrong rotation direction). The only silent failure caught was floating point precision on very large integers — a subtle bug that only appears at the edges of float64 representation.
+
 ---
 
-## Key Insight
+## Key Insights
 
-Claude Opus is robust on well-specified tasks. Failures appear at two points:
+**Pattern 1: Specification gaps → plausible defaults**
+When the prompt doesn't specify an edge case, Claude fills it with a reasonable assumption rather than flagging undefined behavior. This is consistent across BC-02H (reversed range → descending list) and BC-03H (zero items → page 1).
 
-1. **Unspecified edge cases** — when the prompt doesn't mention a boundary condition, Claude fills it in with a plausible default rather than treating it as undefined behavior.
+**Pattern 2: Ambiguity → silent choice**
+When multiple interpretations are valid, Claude picks one without acknowledging the others exist. AR-03 (middle element) is the clearest example — both upper and lower middle are defensible, Claude always picks upper.
 
-2. **Ambiguous requirements** — when multiple valid interpretations exist, Claude picks one silently without saying which assumption it made.
+**Pattern 3: Float precision → silent wrong answer**
+SF-01 is the most dangerous failure type. `int(math.sqrt(large_n))` produces a completely wrong result with no error signal. The correct implementation (`math.isqrt`) exists in Python's standard library but Claude reached for the more intuitive floating point approach.
 
-Both failure modes are invisible to a user who doesn't check edge cases — and they're the exact failures that matter most in production systems.
+**What Claude Opus gets right:**
+- Alphabet wrapping in Caesar cipher
+- Overlapping substring counting (doesn't use str.count())
+- Float division in running averages (uses / not //)
+- Right-direction list rotation
+- Negative number handling in digit sum
 
 ---
 
@@ -126,7 +160,6 @@ Both failure modes are invisible to a user who doesn't check edge cases — and 
 
 | # | Category | What it tests |
 |---|----------|---------------|
-| 3 | Silent Failure | Code that runs but produces wrong output |
 | 4 | Context Window Traps | Critical info buried in long prompts |
 | 5 | Overconfidence | Tasks where the model is confidently wrong |
 
@@ -142,6 +175,26 @@ source venv/bin/activate
 pip install -r requirements.txt
 export ANTHROPIC_API_KEY=your_key
 python runner.py
+```
+
+---
+
+## Project Structure
+
+```
+llm-failure-atlas/
+├── tasks/
+│   ├── boundary_conditions.py          # Category 1 (with hints)
+│   ├── boundary_conditions_hardened.py # Category 1H (hints removed)
+│   ├── ambiguous_requirements.py       # Category 2
+│   └── silent_failure.py               # Category 3
+├── graders/
+│   ├── boundary_conditions.py          # Graders for Category 1
+│   ├── category2.py                    # Graders for Category 1H + 2
+│   └── silent_failure.py               # Graders for Category 3
+├── results/                            # JSON output from each run
+├── runner.py                           # Main runner
+└── README.md
 ```
 
 ---
